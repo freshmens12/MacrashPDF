@@ -146,6 +146,19 @@ function classifyGsError(err) {
   };
 }
 
+// Friendly landing page so visiting the API URL directly doesn't look broken.
+app.get('/', (req, res) => {
+  res.json({
+    name: 'MacrashPDF API',
+    status: 'running',
+    message: 'This is the compression backend. Use the web app to compress PDFs.',
+    endpoints: {
+      'GET /api/health': 'health check',
+      'POST /api/compress': 'multipart form: file (PDF), mode (preset|target), level, targetBytes',
+    },
+  });
+});
+
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
 });
