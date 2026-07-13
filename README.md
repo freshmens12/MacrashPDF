@@ -84,6 +84,14 @@ gs --version
 
 ---
 
+## 2a. One-click local launch (Windows)
+
+Double-click **`start.bat`** in the project root. It checks Node.js, installs dependencies
+on first run, finds Ghostscript, starts the server and client in two windows, waits until
+the app answers, and opens http://localhost:5173 in your browser. Everything runs fully
+offline at full CPU speed. To shut down, close the two MacrashPDF windows or run
+**`stop.bat`**.
+
 ## 2. Run locally
 
 ### Server (port 5000)
