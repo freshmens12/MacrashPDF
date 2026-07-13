@@ -1,0 +1,43 @@
+{
+  "name": "macrashpdf-desktop",
+  "version": "1.0.0",
+  "description": "MacrashPDF Desktop - offline PDF compression",
+  "author": "Vincent Enimedez",
+  "main": "main.js",
+  "scripts": {
+    "prepare:renderer": "cd ../client && npm run build && cd ../desktop && node copy-assets.js renderer",
+    "prepare:gs": "node copy-assets.js gs",
+    "start": "npm run prepare:renderer && npm run prepare:gs && electron .",
+    "dist": "npm run prepare:renderer && npm run prepare:gs && electron-builder --win"
+  },
+  "devDependencies": {
+    "electron": "^33.3.1",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.vincentenimedez.macrashpdf",
+    "productName": "MacrashPDF",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer/**"
+    ],
+    "extraResources": [
+      {
+        "from": "gs",
+        "to": "gs"
+      }
+    ],
+    "win": {
+      "target": "nsis",
+      "signAndEditExecutable": false
+    },
+    "nsis": {
+      "oneClick": true,
+      "artifactName": "MacrashPDF-Setup-${version}.${ext}"
+    }
+  }
+}

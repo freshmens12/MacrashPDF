@@ -1,15 +1,19 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { checkHealth } from '../api.js';
+import { checkHealth, IS_DESKTOP } from '../api.js';
 
 const WAKE_WINDOW_S = 90; // free-tier cold starts (Render) can take ~30-60s
 const RETRY_EVERY_MS = 4000;
 
 export default function ServerStatus() {
-  const [status, setStatus] = useState('checking'); // checking | online | offline
+  const [status, setStatus] = useState(IS_DESKTOP ? 'online' : 'checking'); // checking | online | offline
   const [countdown, setCountdown] = useState(WAKE_WINDOW_S);
   const runIdRef = useRef(0);
 
   const startChecking = useCallback(() => {
+    if (IS_DESKTOP) {
+      setStatus('online');
+      return undefined;
+    }
     const runId = ++runIdRef.current;
     setStatus('checking');
     setCountdown(WAKE_WINDOW_S);
@@ -67,7 +71,7 @@ export default function ServerStatus() {
           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
           <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
         </span>
-        Server is online
+        {IS_DESKTOP ? 'Offline engine ready' : 'Server is online'}
       </span>
     );
   }

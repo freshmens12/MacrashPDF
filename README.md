@@ -8,7 +8,8 @@ rasterizes pages.
 ```
 macrashpdf/
 ├── client/   → React + Vite + Tailwind CSS (deploy to Vercel)
-└── server/   → Node.js + Express + Ghostscript (deploy to Render via Docker)
+├── server/   → Node.js + Express + Ghostscript (deploy to Render via Docker)
+└── desktop/  → Electron desktop app (offline .exe with Ghostscript bundled)
 ```
 
 ## Features
@@ -124,6 +125,28 @@ Open http://localhost:5173. The client calls `http://localhost:5000` by default;
 elsewhere, copy `.env.example` to `.env` and set `VITE_API_URL`.
 
 ---
+
+## 2b. Desktop app (Windows, fully offline)
+
+The `desktop/` folder wraps the same React client in Electron and bundles Ghostscript, so
+the installed app compresses PDFs completely offline — no server, no internet, files never
+leave the machine. The client auto-detects the desktop environment (`window.macrash`) and
+routes compression to the bundled engine instead of the network.
+
+Build the installer (requires Ghostscript installed locally once, to copy from):
+
+```bash
+cd desktop
+npm install
+npm run dist
+```
+
+Output: `desktop/release/MacrashPDF-Setup-1.0.0.exe` (~120 MB, includes Chromium runtime +
+Ghostscript). Distribute it via GitHub Releases. To run unpackaged during development:
+`npm start`.
+
+License note: Ghostscript is AGPL-licensed — fine to bundle in this open-source project,
+but keep the repo public/source-available when distributing the installer.
 
 ## 3. Deploy the server to Render
 
