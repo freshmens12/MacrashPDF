@@ -1,0 +1,19 @@
+{
+  "name": "macrashpdf-server",
+  "version": "1.0.0",
+  "description": "MacrashPDF compression API — Express + Ghostscript",
+  "type": "module",
+  "main": "server.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "multer": "^2.0.1"
+  }
+}
