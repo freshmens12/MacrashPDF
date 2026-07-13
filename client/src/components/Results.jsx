@@ -19,7 +19,9 @@ export default function Results({ result, fileName, onDownload, onRecompress, on
             <span className="font-semibold">
               This PDF is already optimized — compression won&apos;t reduce it further.
             </span>{' '}
-            You can still download the original file below.
+            This usually happens when the file was compressed before (including by this tool) —
+            compressing it again won&apos;t make it smaller. You can still download the original
+            file below.
           </p>
         </div>
       ) : (

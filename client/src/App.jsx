@@ -224,7 +224,8 @@ export default function App() {
                 <div>
                   <p className="font-semibold text-slate-900 dark:text-white">Compressing your PDF…</p>
                   <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                    This usually takes a few seconds. Large files can take up to a minute.
+                    Small files finish in seconds. On the free server, large files can take a
+                    few minutes — please keep this tab open.
                   </p>
                 </div>
                 <div className="h-1.5 w-full max-w-xs overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">

@@ -13,7 +13,10 @@ const execFileAsync = promisify(execFile);
 const PORT = process.env.PORT || 5000;
 const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50 MB
 const MIN_TARGET_BYTES = 10 * 1024; // refuse absurd targets below 10 KB
-const GS_TIMEOUT_MS = 120_000; // kill Ghostscript after 2 minutes per pass
+const GS_TIMEOUT_MS = 150_000; // kill Ghostscript after 2.5 minutes per pass
+// Target mode runs several passes; on slow free-tier CPUs stop starting new
+// passes once this much time has been spent and return the best result so far.
+const TARGET_TOTAL_BUDGET_MS = 210_000;
 
 // Ghostscript binary: override with GHOSTSCRIPT_PATH, otherwise use the
 // platform default ("gswin64c" on Windows, "gs" everywhere else).
@@ -201,8 +204,11 @@ app.post('/api/compress', upload.single('file'), async (req, res) => {
       if (ratio < 0.1) attempts = TARGET_ATTEMPTS.slice(2); // start at /screen
       else if (ratio < 0.35) attempts = TARGET_ATTEMPTS.slice(1); // start at /ebook
 
+      const passesStartedAt = Date.now();
       let smallest = null; // { path, size } — fallback if no pass meets the target
       for (const attempt of attempts) {
+        // Out of time budget: settle for the best result we already have.
+        if (smallest && Date.now() - passesStartedAt > TARGET_TOTAL_BUDGET_MS) break;
         const outputPath = newOutputPath();
         let size;
         try {

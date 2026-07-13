@@ -15,7 +15,9 @@ export async function checkHealth(timeoutMs = 8000) {
   }
 }
 
-const REQUEST_TIMEOUT_MS = 180_000; // 3 minutes, then treat as a backend timeout
+// Free-tier servers (Render) have ~0.5 CPU, so big PDFs genuinely take a
+// few minutes — give them room before declaring a timeout.
+const REQUEST_TIMEOUT_MS = 300_000; // 5 minutes
 
 // options: { mode: 'preset', level: 'low'|'medium'|'high' }
 //       or { mode: 'target', targetBytes: number }
@@ -60,7 +62,9 @@ export async function compressPdf(file, options) {
     };
   } catch (err) {
     if (err.name === 'AbortError') {
-      throw new Error('The server took too long to respond. Please try again.');
+      throw new Error(
+        'The server took too long. Free servers are slower — try again, or use a lighter compression setting.'
+      );
     }
     if (err instanceof TypeError) {
       throw new Error('Could not reach the server. Check your connection and try again.');

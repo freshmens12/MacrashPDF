@@ -49,6 +49,17 @@ export default function ServerStatus() {
 
   useEffect(() => startChecking(), [startChecking]);
 
+  // Keep-alive: while the tab is open, ping every 10 minutes so a free-tier
+  // server (Render sleeps after 15 idle minutes) stays awake mid-session.
+  useEffect(() => {
+    if (status !== 'online') return;
+    const keepAlive = setInterval(async () => {
+      const ok = await checkHealth();
+      if (!ok) startChecking(); // server went down/asleep — show the countdown again
+    }, 10 * 60 * 1000);
+    return () => clearInterval(keepAlive);
+  }, [status, startChecking]);
+
   if (status === 'online') {
     return (
       <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-400">
