@@ -65,7 +65,7 @@ export default function Footer() {
             href="https://vincent-portfolio-zeta.vercel.app/"
             target="_blank"
             rel="noopener noreferrer"
-            className="font-semibold text-slate-500 underline-offset-2 transition-colors hover:text-brand-600 hover:underline dark:text-slate-400 dark:hover:text-brand-400"
+            className="bg-gradient-to-r from-sky-400 to-blue-600 bg-clip-text font-bold text-transparent transition-opacity hover:opacity-80"
           >
             Vincent Enimedez
           </a>
