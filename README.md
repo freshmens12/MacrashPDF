@@ -5,6 +5,17 @@ result, and download — files are deleted from the server the moment processing
 Text stays selectable: compression uses Ghostscript's `pdfwrite` device, which never
 rasterizes pages.
 
+![MacrashPDF screenshot](docs/screenshot.png)
+
+## Download
+
+**[⬇ Download MacrashPDF for Windows](https://github.com/freshmens12/MacrashPDF/releases/latest)**:
+the desktop app works fully offline, and your files never leave your computer. Get
+`MacrashPDF-Setup-x.y.z.exe` from the latest release and run it. The installer isn't
+code-signed, so if Windows SmartScreen appears, click **More info → Run anyway**.
+
+## Project structure
+
 ```
 macrashpdf/
 ├── client/   → React + Vite + Tailwind CSS (deploy to Vercel)
@@ -36,6 +47,8 @@ macrashpdf/
 - Already-optimized PDFs are detected — you get the untouched original back, never a larger file
 - Clear errors for non-PDFs, oversized files, password-protected/corrupted PDFs, and timeouts
 - **No database, no storage** — temp files are deleted immediately after every request
+- **Desktop app** for Windows: the same interface with Ghostscript built in, so it compresses
+  fully offline (the footer shows "Offline engine ready" instead of the server status)
 
 ---
 
@@ -85,7 +98,7 @@ gs --version
 
 ---
 
-## 2a. One-click local launch (Windows)
+## 2. One-click local launch (Windows)
 
 Double-click **`start.bat`** in the project root. It checks Node.js, installs dependencies
 on first run, finds Ghostscript, starts the server and client in two windows, waits until
@@ -93,7 +106,7 @@ the app answers, and opens http://localhost:5173 in your browser. Everything run
 offline at full CPU speed. To shut down, close the two MacrashPDF windows or run
 **`stop.bat`**.
 
-## 2. Run locally
+## 3. Run locally (manual)
 
 ### Server (port 5000)
 
@@ -126,7 +139,7 @@ elsewhere, copy `.env.example` to `.env` and set `VITE_API_URL`.
 
 ---
 
-## 2b. Desktop app (Windows, fully offline)
+## 4. Desktop app (Windows, fully offline)
 
 The `desktop/` folder wraps the same React client in Electron and bundles Ghostscript, so
 the installed app compresses PDFs completely offline — no server, no internet, files never
@@ -142,13 +155,18 @@ npm run dist
 ```
 
 Output: `desktop/release/MacrashPDF-Setup-1.0.0.exe` (~120 MB, includes Chromium runtime +
-Ghostscript). Distribute it via GitHub Releases. To run unpackaged during development:
-`npm start`.
+Ghostscript). It's published on the
+[Releases page](https://github.com/freshmens12/MacrashPDF/releases); the web app's
+**Download Desktop App** button links to the latest release. To run unpackaged during
+development: `npm start`.
+
+To publish a new version: bump `version` in `desktop/package.json`, run `npm run dist`, then
+create a GitHub release and attach the new `.exe`.
 
 License note: Ghostscript is AGPL-licensed — fine to bundle in this open-source project,
 but keep the repo public/source-available when distributing the installer.
 
-## 3. Deploy the server to Render
+## 5. Deploy the server to Render
 
 Render's native Node environment does **not** include Ghostscript, so the server ships
 with a `Dockerfile` (Node 20 slim + Ghostscript).
@@ -164,7 +182,7 @@ with a `Dockerfile` (Node 20 slim + Ghostscript).
    - `CLIENT_ORIGIN` = your Vercel URL, e.g. `https://macrashpdf.vercel.app`
 5. Deploy, then verify `https://<your-service>.onrender.com/api/health`.
 
-## 4. Deploy the client to Vercel
+## 6. Deploy the client to Vercel
 
 1. On [Vercel](https://vercel.com) → **Add New → Project** → import the same repo.
 2. Settings:
