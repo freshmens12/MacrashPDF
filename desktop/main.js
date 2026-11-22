@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, shell } = require('electron');
 const { execFile } = require('node:child_process');
 const { promisify } = require('node:util');
 const fs = require('node:fs/promises');
@@ -178,6 +178,13 @@ function createWindow() {
       nodeIntegration: false,
     },
   });
+  // Open external links (e.g. "Support the developer") in the system browser
+  // instead of a new Electron window.
+  win.webContents.setWindowOpenHandler(({ url }) => {
+    if (/^https?:\/\//i.test(url)) shell.openExternal(url);
+    return { action: 'deny' };
+  });
+
   win.loadFile(path.join(__dirname, 'renderer', 'index.html'));
 }
 

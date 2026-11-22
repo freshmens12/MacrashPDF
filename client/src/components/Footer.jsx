@@ -1,8 +1,9 @@
 import ServerStatus from './ServerStatus.jsx';
 import { IS_DESKTOP } from '../api.js';
 
-const DESKTOP_DOWNLOAD_URL =
-  'https://drive.google.com/file/d/1e3gjMYKfl2WaZlTtYCyyAV5zUMe17NSQ/view?usp=sharing';
+const DESKTOP_DOWNLOAD_URL = 'https://github.com/freshmens12/MacrashPDF/releases/latest';
+
+const SUPPORT_URL = 'https://vincentos.vercel.app/#/wallet';
 
 export default function Footer() {
   return (
@@ -59,15 +60,14 @@ export default function Footer() {
           Files are processed securely and deleted immediately. Nothing is stored.
         </div>
 
-        <div className="text-xs text-slate-400 dark:text-slate-500">
-          Developed by{' '}
+        <div className="text-xs">
           <a
-            href="https://vincent-portfolio-zeta.vercel.app/"
+            href={SUPPORT_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="bg-gradient-to-r from-sky-400 to-blue-600 bg-clip-text font-bold text-transparent transition-opacity hover:opacity-80"
           >
-            Vincent Enimedez
+            Support the developer
           </a>
         </div>
       </div>

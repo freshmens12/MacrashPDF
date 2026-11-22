@@ -212,4 +212,4 @@ every error path. Nothing is logged about file contents and there is no database
 
 ---
 
-Developed by **Vincent Enimedez**.
+[Support the developer](https://vincentos.vercel.app/#/wallet)
